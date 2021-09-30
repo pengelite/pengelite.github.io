@@ -1,0 +1,541 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Fe">
+  <meta name="keywords" content="">
+  <meta name="description" content="参考:W3C,hebedichwindow.location对象笔记  前言location是一个常用的对象,我们可以通过他获得有关当前 URL 的信息    PS: window.location等价于document.location，可以交换使用 关于他的属性以及一些方法却一直记得不是很熟,在这里做一个简单的笔记,方便以后查看 Location 一个例子  URL:  http:&#x2F;&#x2F;127">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS window.location对象笔记,url解剖">
+<meta property="og:url" content="http://example.com/2017/12/21/2017-12-21-http_window.location/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="参考:W3C,hebedichwindow.location对象笔记  前言location是一个常用的对象,我们可以通过他获得有关当前 URL 的信息    PS: window.location等价于document.location，可以交换使用 关于他的属性以及一些方法却一直记得不是很熟,在这里做一个简单的笔记,方便以后查看 Location 一个例子  URL:  http:&#x2F;&#x2F;127">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-28T01:38:12.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Http">
+<meta property="article:tag" content="JS">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary_large_image">
+  
+  <title>JS window.location对象笔记,url解剖 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>神雕大侠</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="http_window.location">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2017-12-21 00:00" pubdate>
+        2017年12月21日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.1k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      6 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">http_window.location</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<p>参考:<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/">W3C</a>,<a target="_blank" rel="noopener" href="http://www.jb51.net/article/57407.htm">hebedich</a><br>window.location对象笔记</p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>location是一个常用的对象,我们可以通过他获得有关当前 <strong>URL</strong> 的信息   </p>
+<p>PS: window.location等价于document.location，可以交换使用</p>
+<p>关于他的属性以及一些方法却一直记得不是很熟,在这里做一个简单的笔记,方便以后查看</p>
+<h2 id="Location"><a href="#Location" class="headerlink" title="Location"></a>Location</h2><blockquote>
+<p>一个例子</p>
+</blockquote>
+<p>URL:  <a href="/">http://127.0.0.1:4000/2017/12/21/http_window.location/?name=fedemo&amp;&amp;id=001#cn</a>  </p>
+<h4 id="Location-对象属性"><a href="#Location-对象属性" class="headerlink" title="Location 对象属性"></a>Location 对象属性</h4><p>这八个属性都是可读写的,我们可以设置或返回其中的数据<br>但是只有修改href与hash还有意义,location.href会重新定位到一个URL，而修改location.hash会跳到当前页面中的anchor(<code>&lt;a id=&quot;name&quot;&gt;</code>或者<code>&lt;div id=&quot;id&quot;&gt;</code>等)名字的标记(如果有)，而且页面不会被重新加载</p>
+<table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th align="center">描述</th>
+<th align="center">值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">hash</td>
+<td align="center">从井号 (#) 开始的 URL（锚）</td>
+<td align="center">#cn</td>
+</tr>
+<tr>
+<td align="center">host</td>
+<td align="center">主机名和当前 URL 的端口号</td>
+<td align="center">4000</td>
+</tr>
+<tr>
+<td align="center">hostname</td>
+<td align="center">当前 URL 的主机名</td>
+<td align="center">127.0.0.1</td>
+</tr>
+<tr>
+<td align="center">href</td>
+<td align="center">完整的 URL</td>
+<td align="center"><a target="_blank" rel="noopener" href="http://127.0.0.1:4000/2017/12/21/http_window.location/?name=fedemo&amp;&amp;id=001#cn">http://127.0.0.1:4000/2017/12/21/http_window.location/?name=fedemo&amp;&amp;id=001#cn</a></td>
+</tr>
+<tr>
+<td align="center">pathname</td>
+<td align="center">当前 URL 的路径部分</td>
+<td align="center">/2017/12/21/http_window.location/</td>
+</tr>
+<tr>
+<td align="center">port</td>
+<td align="center">当前 URL 的端口号</td>
+<td align="center">4000</td>
+</tr>
+<tr>
+<td align="center">protocol</td>
+<td align="center">当前 URL 的协议</td>
+<td align="center">http</td>
+</tr>
+<tr>
+<td align="center">search</td>
+<td align="center">从问号 (?) 开始的 URL（查询部分）</td>
+<td align="center">?name=fedemo&amp;&amp;id=001</td>
+</tr>
+</tbody></table>
+<p>PS: <code>hash</code>和<code>search</code>,实质上是截取第一个#(?)之后的字段<br><br></p>
+<h4 id="Location-对象方法"><a href="#Location-对象方法" class="headerlink" title="Location 对象方法"></a>Location 对象方法</h4><table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">assign()</td>
+<td align="center">加载新的文档</td>
+</tr>
+<tr>
+<td align="center">reload()</td>
+<td align="center">重新加载当前文档</td>
+</tr>
+<tr>
+<td align="center">replace()</td>
+<td align="center">用新的文档替换当前文档</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>location.assign( url )</p>
+</blockquote>
+<p>location.assign(‘<a target="_blank" rel="noopener" href="http://www.baidu.com&/#39;">http://www.baidu.com&#39;</a>); 等价于 window.location = ‘<a target="_blank" rel="noopener" href="http://www.baidu.com&/#39;">http://www.baidu.com&#39;</a>   </p>
+<p>这种方式会将新地址放到浏览器历史栈中，意味着转到新页面后“后退按钮”仍可以回到该页面。</p>
+<blockquote>
+<p>location.reload( force )</p>
+</blockquote>
+<p>重新载入当前页面。force为true时从服务器端重载；false则从浏览器缓存中重载，默认值false。</p>
+<blockquote>
+<p>location.replace( url )</p>
+</blockquote>
+<p>与assign方法一样，但会从浏览器历史栈中删除本页面，也就是说跳转到新页面后“后退按钮”不能回到该页面。   </p>
+<p>目前IE、Chrome只是简单的跳转，只有Firefox会删除本页面的历史记录。</p>
+<h2 id="对象描述"><a href="#对象描述" class="headerlink" title="对象描述"></a>对象描述</h2><p>Location 对象存储在 Window 对象的 Location 属性中，表示那个窗口中当前显示的文档的 Web 地址。它的 href 属性存放的是文档的完整 URL，其他属性则分别描述了 URL 的各个部分。这些属性与 Anchor 对象（或 Area 对象）的 URL 属性非常相似。当一个 Location 对象被转换成字符串，href 属性的值被返回。这意味着你可以使用表达式 location 来替代 location.href。</p>
+<p>不过 Anchor 对象表示的是文档中的超链接，Location 对象表示的却是浏览器当前显示的文档的 URL（或位置）。但是 Location 对象所能做的远远不止这些，它还能控制浏览器显示的文档的位置。如果把一个含有 URL 的字符串赋予 Location 对象或它的 href 属性，浏览器就会把新的 URL 所指的文档装载进来，并显示出来。</p>
+<p>除了设置 location 或 location.href 用完整的 URL 替换当前的 URL 之外，还可以修改部分 URL，只需要给 Location 对象的其他属性赋值即可。这样做就会创建新的 URL，其中的一部分与原来的 URL 不同，浏览器会将它装载并显示出来。例如，假设设置了Location对象的 hash 属性，那么浏览器就会转移到当前文档中的一个指定的位置。同样，如果设置了 search 属性，那么浏览器就会重新装载附加了新的查询字符串的 URL。</p>
+<p>除了 URL 属性外，Location 对象的 reload() 方法可以重新装载当前文档，replace() 可以装载一个新文档而无须为它创建一个新的历史记录，也就是说，在浏览器的历史列表中，新文档将替换当前文档。</p>
+<h2 id="url"><a href="#url" class="headerlink" title="url"></a>url</h2><p>url: 统一资源定位符 / Uniform Resource Locator</p>
+<p>统一资源定位符是对可以从互联网上得到的资源的位置和访问方法的一种简洁的表示，是互联网上标准资源的地址。互联网上的每个文件都有一个唯一的URL，它包含的信息指出文件的位置以及浏览器应该怎么处理它。   </p>
+<p>它最初是由蒂姆·伯纳斯·李发明用来作为万维网的地址。现在它已经被万维网联盟编制为互联网标准RFC1738了。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Http/">Http</a>
+                    
+                      <a class="hover-with-bg" href="/tags/JS/">JS</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/03/31/2018-03-31-tomcat-coding/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">tomcat笔记,编码问题</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
